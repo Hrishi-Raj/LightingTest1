@@ -2,45 +2,33 @@ package com.omen.acer.myapplication;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class MainActivity extends AppCompatActivity {
 
-    static TextView text;
-    TextView locat;
     private Double lat,log;
     private static final int MY_PERMISSIONS_REQUEST_READ_LOCATION = 1;
     private FusedLocationProviderClient client;
+    Intent myIntent,myIntent2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        locat= (TextView) findViewById(R.id.location);
-        text= (TextView) findViewById(R.id.text);
+
         client = LocationServices.getFusedLocationProviderClient(this);
 
         if (ContextCompat.checkSelfPermission(MainActivity.this,
@@ -89,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
                                 // Logic to handle location object
                                 lat = location.getLatitude();
                                 log= location.getLongitude();
-                                locat.setText("Lat:"+lat+"\nLog:"+log);
-                                new JSONTask().execute("https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+log+"&appid=72211993449697fef818ed78213ff2c1");
+
                             }
                         }
                     });
@@ -99,5 +86,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onbuttonclick(View v){
+        myIntent = new Intent(getBaseContext(),   Main2Activity.class);
+        myIntent.putExtra("lat",lat);
+        myIntent.putExtra("log",log);
+        startActivity(myIntent);
+    }
+    public void lightning(View v){
+        myIntent = new Intent(getBaseContext(),   Main3Activity.class);
+        myIntent.putExtra("lat",lat);
+        myIntent.putExtra("log",log);
+        startActivity(myIntent);
+    }
 
 }

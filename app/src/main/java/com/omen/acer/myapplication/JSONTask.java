@@ -34,7 +34,7 @@ public class JSONTask extends AsyncTask<String,String,String> {
             InputStream stream = connection.getInputStream();
             reader = new BufferedReader(new InputStreamReader(stream));
             StringBuilder buffer = new StringBuilder();
-            String line ="";
+            String line ;
             while((line= reader.readLine())!=null)
             {
                 buffer.append(line);
@@ -62,29 +62,37 @@ public class JSONTask extends AsyncTask<String,String,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        JSONObject jo= null;
+        JSONObject jo;
         try {
             jo = new JSONObject(s);
             String place = (String) jo.get("name");
             JSONArray w = (JSONArray) jo.get("weather");
-            for(int i=0;i<w.length();i++)
-            {
-                JSONObject j= (JSONObject) w.get(i);
-                weather+=j.get("main")+", ";
+            for (int i = 0; i < w.length(); i++) {
+                JSONObject j = (JSONObject) w.get(i);
+                weather += j.get("main") + ", ";
             }
-            JSONObject m= jo.getJSONObject("main");
-            Double temp = m.getDouble("temp")-273.15;
+            JSONObject m = jo.getJSONObject("main");
+            Double temp = m.getDouble("temp") - 273.15;
             Double pressure = m.getDouble("pressure");
             Double humidity = m.getDouble("humidity");
             JSONObject wind = jo.getJSONObject("wind");
             Double wind_speed = wind.getDouble("speed");
             Double wind_angle = wind.getDouble("deg");
-            final double a=6.1121,b=18.678,c=257.14,d=234.5;
-            double magnus=Math.log(humidity/100)+(b-temp/d)*temp/(c+temp);
-            Double dewPoint= c*magnus/(b-magnus);
-            Double cloud_height=Math.abs(dewPoint-temp)*121.92;
-            MainActivity.text.setText("Place:"+ place +"\nTemprature:"+ temp +"'c\nWeather:"+weather+"\nPressure:"+ pressure +"hPa\nHumidity:"+ humidity +"%\nWind:"+ wind_speed +"m/s at <"+ wind_angle+"\nDewPoint:"+dewPoint+"'C\nCloudHeight:"+cloud_height+"m");
-        } catch (JSONException e) {
+            final double a = 6.1121, b = 18.678, c = 257.14, d = 234.5;
+            double magnus = Math.log(humidity / 100) + (b - temp / d) * temp / (c + temp);
+            Double dewPoint = c * magnus / (b - magnus);
+            Double cloud_height = Math.abs(dewPoint - temp) * 121.92;
+            try {
+                Main3Activity.text.setText("DewPoint:" + dewPoint + "'C\nCloudHeight:" + cloud_height + "m");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+               Main2Activity.text.setText("Place:" + place + "\nTemprature:" + temp + "'c\nWeather:" + weather + "\nPressure:" + pressure + "hPa\nHumidity:" + humidity + "%\nWind:" + wind_speed + "m/s at <" + wind_angle);
+            }
+            catch (Exception e)
+            {e.printStackTrace();}
+        }catch (JSONException e) {
             e.printStackTrace();
         }
 
