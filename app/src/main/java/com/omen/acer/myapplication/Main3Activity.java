@@ -24,16 +24,15 @@ public class Main3Activity extends AppCompatActivity {
         detail = findViewById(R.id.details_field);
         icon = findViewById(R.id.icon);
         chance = findViewById(R.id.probability);
-        new JSONTask2(Main3Activity.this).execute("https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+log+"&appid=72211993449697fef818ed78213ff2c1");
-
+        setdata(bundle.getString("city"),bundle.getString("type"),bundle.getString("detail"),(Bitmap)bundle.get("bitmap"));
     }
 
-    public void setdata(String place, String weather, double dewPoint, double cloud_height, Bitmap bitmap) {
-        city.setText(place);
+    public void setdata(String place, String weather, String d, Bitmap bitmap) {
+
         icon.setImageBitmap(bitmap);
         city.setText(place);
         type.setText(weather);
         chance.setText("__%");
-        detail.setText("DewPoint: "+dewPoint+"'C\nCloud Height: "+cloud_height+"m");
+        detail.setText(d);
     }
 }

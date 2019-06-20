@@ -3,9 +3,6 @@ package com.omen.acer.myapplication;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,13 +19,13 @@ import java.net.URL;
 
 public class JSONTask extends AsyncTask<String,String,String> {
 
-    private final Main2Activity activity;
+    private final MainActivity activity;
     private String weather="",place;
     private Bitmap bitmap;
     private double temp,wind_speed,dewPoint,cloud_height,wind_angle,humidity,pressure;
 
-    JSONTask(Main2Activity main2Activity) {
-        this.activity = main2Activity;
+    JSONTask(MainActivity mainActivity) {
+        this.activity = mainActivity;
     }
 
     @Override
@@ -98,14 +95,17 @@ public class JSONTask extends AsyncTask<String,String,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    activity.setdata(place,weather,humidity,wind_speed,temp,pressure,bitmap);
-                }
-            });
-
+            String detail="Pressure: "+pressure+"hPa\nHumidity: "+humidity+"%\nWind:"+wind_speed+"m/s";
+            activity.myIntent2.putExtra("city",place);
+            activity.myIntent2.putExtra("weather",weather);
+            activity.myIntent2.putExtra("temp",temp);
+            activity.myIntent2.putExtra("detail",detail);
+            activity.myIntent2.putExtra("bitmap",bitmap);
+            activity.myIntent3.putExtra("city",place);
+            activity.myIntent3.putExtra("type",weather);
+            detail="DewPoint: "+dewPoint+"'C\nCloud Height: "+cloud_height+"m";
+            activity.myIntent3.putExtra("detail",detail);
+            activity.myIntent3.putExtra("bitmap",bitmap);
     }
 
 }

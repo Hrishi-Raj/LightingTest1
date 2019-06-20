@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private Double lat,log;
     private static final int MY_PERMISSIONS_REQUEST_READ_LOCATION = 1;
     private FusedLocationProviderClient client;
-    Intent myIntent,myIntent2;
+    Intent myIntent2,myIntent3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
                                 // Logic to handle location object
                                 lat = location.getLatitude();
                                 log= location.getLongitude();
+                                myIntent2 = new Intent(getBaseContext(),   Main2Activity.class);
+                                myIntent3 = new Intent(getBaseContext(),   Main3Activity.class);
+
+                                JSONTask task= new JSONTask(MainActivity.this);
+                                task.execute("https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+log+"&appid=72211993449697fef818ed78213ff2c1");
 
                             }
                         }
@@ -87,16 +93,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onbuttonclick(View v){
-        myIntent = new Intent(getBaseContext(),   Main2Activity.class);
-        myIntent.putExtra("lat",lat);
-        myIntent.putExtra("log",log);
-        startActivity(myIntent);
+        if(myIntent2.getExtras()!=null)
+        startActivity(myIntent2);
     }
     public void lightning(View v){
-        myIntent = new Intent(getBaseContext(),   Main3Activity.class);
-        myIntent.putExtra("lat",lat);
-        myIntent.putExtra("log",log);
-        startActivity(myIntent);
+        if(myIntent3.getExtras()!=null)
+        startActivity(myIntent3);
     }
 
 }

@@ -27,15 +27,14 @@ public class Main2Activity extends AppCompatActivity {
         weather = findViewById(R.id.type);
         icon= findViewById(R.id.icon);
 
-        JSONTask task= new JSONTask(Main2Activity.this);
-        task.execute("https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+log+"&appid=72211993449697fef818ed78213ff2c1");
+        setdata(bundle.getString("city"),bundle.getString("weather"),bundle.getString("detail"),bundle.getDouble("temp"),(Bitmap)bundle.get("bitmap"));
 
     }
-    void setdata(String c,String w,double humid,double wind,double t,double p,Bitmap bitmap)
+    void setdata(String c,String w,String d,double t,Bitmap bitmap)
     {
         city.setText(c);
         weather.setText(w);
-        detail.setText("Pressure: "+p+"hPa\nHumidity: "+humid+"%\nWind:"+wind+"m/s");
+        detail.setText(d);
         temp.setText(t+"'C");
         icon.setImageBitmap(bitmap);
     }
