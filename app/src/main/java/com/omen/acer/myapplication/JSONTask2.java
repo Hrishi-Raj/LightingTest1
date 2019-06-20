@@ -3,9 +3,6 @@ package com.omen.acer.myapplication;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,45 +17,43 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-public class JSONTask extends AsyncTask<String,String,String> {
+public class JSONTask2 extends AsyncTask<String, String, String> {
 
-    private final Main2Activity activity;
-    private String weather="",place;
+    private final Main3Activity activity;
+    private String weather = "", place;
     private Bitmap bitmap;
-    private double temp,wind_speed,dewPoint,cloud_height,wind_angle,humidity,pressure;
+    private double temp, wind_speed, dewPoint, cloud_height, wind_angle, humidity, pressure;
 
-    JSONTask(Main2Activity main2Activity) {
-        this.activity = main2Activity;
+    JSONTask2(Main3Activity main3Activity) {
+        this.activity = main3Activity;
     }
 
     @Override
-    protected String doInBackground(String... urls)
-    {
+    protected String doInBackground(String... urls) {
 
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         try {
-            URL url= new URL(urls[0]);
+            URL url = new URL(urls[0]);
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
 
             InputStream stream = connection.getInputStream();
             reader = new BufferedReader(new InputStreamReader(stream));
             StringBuilder buffer = new StringBuilder();
-            String line ;
-            while((line= reader.readLine())!=null)
-            {
+            String line;
+            while ((line = reader.readLine()) != null) {
                 buffer.append(line);
             }
-            String s=buffer.toString();
+            String s = buffer.toString();
             JSONObject jo;
             jo = new JSONObject(s);
             place = (String) jo.get("name");
             JSONArray w = (JSONArray) jo.get("weather");
 
             JSONObject j = (JSONObject) w.get(0);
-            weather =  j.getString("main");
-            String ic= j.getString("icon");
+            weather = j.getString("main");
+            String ic = j.getString("icon");
             JSONObject m = jo.getJSONObject("main");
             temp = (double)Math.round((m.getDouble("temp") - 273.15)*100)/100;
             pressure = (double)Math.round(m.getDouble("pressure"));
@@ -85,8 +80,8 @@ public class JSONTask extends AsyncTask<String,String,String> {
         } finally {
             if (connection != null)
                 connection.disconnect();
-            try{
-                if(reader!=null)
+            try {
+                if (reader != null)
                     reader.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -99,13 +94,14 @@ public class JSONTask extends AsyncTask<String,String,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    activity.setdata(place,weather,humidity,wind_speed,temp,pressure,bitmap);
-                }
-            });
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.setdata(place, weather, dewPoint, cloud_height, bitmap);
+            }
+        });
 
     }
+
 
 }
